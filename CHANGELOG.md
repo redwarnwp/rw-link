@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+-   Add `Parse Link` function
+
+## 0.1.1 - 2020-11-17
+
+-   Updated README.md with installation instructions
+-   Improved usage instructions
+
+## 0.1.0 - 2020-11-17
+
 -   Changed `Copy Link` function to automatically detect commit, and better detection of folders
 -   Changed name from `RW-Link` to `RWLink`
 
