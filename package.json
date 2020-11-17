@@ -47,7 +47,7 @@
         "watch": "tsc -watch -p ./",
         "pretest": "yarn run compile && yarn run lint",
         "test": "node ./out/test/runTest.js",
-        "build": "yarn run compile && vsce package --yarn"
+        "build": "yarn run compile && vsce package --yarn -o rwlink.vsix"
     },
     "devDependencies": {
         "@types/glob": "^7.1.1",
