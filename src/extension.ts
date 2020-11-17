@@ -1,9 +1,10 @@
 import * as vscode from "vscode";
+import { GitExtension } from "./git";
 
 export function activate(context: vscode.ExtensionContext) {
     vscode.window.showInformationMessage("RWLink: Extension active");
 
-    const config = vscode.workspace.getConfiguration("rw-link");
+    const config = vscode.workspace.getConfiguration("RWLink");
     const rwFolder =
         config.get<any>("folders.redwarn") +
         (config.get<any>("folders.redwarn").endsWith("/") ? "" : "/");
@@ -12,14 +13,50 @@ export function activate(context: vscode.ExtensionContext) {
         config.get<any>("folders.redwarnWeb") +
         (config.get<any>("folders.redwarnWeb").endsWith("/") ? "" : "/");
 
-    let copyLink = vscode.commands.registerCommand("rw-link.copylink", () => {
+    const gitExtension = vscode.extensions.getExtension<GitExtension>(
+        "vscode.git"
+    )!.exports;
+    const git = gitExtension.getAPI(1);
+
+    let copyLink = vscode.commands.registerCommand("rwlink.copylink", () => {
         const editor = vscode.window.activeTextEditor;
         if (editor) {
             let path = vscode.workspace.asRelativePath(
                 editor.document.fileName
             );
-            path = path.replace(rwFolder, "rw:/master/");
-            path = path.replace(rwwFolder, "rww:/dev-rw16/");
+            const commit = git.getRepository(editor.document.uri)!.state.HEAD!
+                .commit!;
+            if (path.includes(rwFolder)) {
+                path = path.replace(rwFolder, `rw:/${commit}/`);
+            } else if (path.includes(rwwFolder)) {
+                path = path.replace(rwwFolder, `rww:/${commit}/`);
+            } else {
+                const folder = `${
+                    vscode.workspace
+                        .workspaceFolders![0].uri.path.split("/")
+                        .reverse()[0]
+                }/`;
+                if (folder === rwFolder) {
+                    path = `rw:/${commit}/${path}`;
+                } else if (folder === rwwFolder) {
+                    path = `rww:/${commit}/${path}`;
+                } else {
+                    vscode.window
+                        .showErrorMessage(
+                            `Cannot parse "${folder}${path}"! Make sure you have set the folder settings correctly!`,
+                            "Edit Settings"
+                        )
+                        .then((action) => {
+                            if (action === "Edit Settings") {
+                                vscode.commands.executeCommand(
+                                    "workbench.action.openSettings",
+                                    "@ext:sportzpikachu.rwlink"
+                                );
+                            }
+                        });
+                    return;
+                }
+            }
             let lnum = `#L${editor.selection.start.line + 1}`;
             if (!editor.selection.isSingleLine) {
                 lnum += `-${editor.selection.end.line + 1}`;
