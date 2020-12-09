@@ -2,7 +2,7 @@
     "name": "rwlink",
     "displayName": "RedWarn Link",
     "description": "",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "engines": {
         "vscode": "^1.49.0"
     },
@@ -36,6 +36,16 @@
                     "type": "string",
                     "default": "redwarn-web/",
                     "description": "RedWarn Web folder name (e.g. 'redwarn-web/')"
+                },
+                "RWLink.folders.redwarnDiscord": {
+                    "type": "string",
+                    "default": "redwarn-discord/",
+                    "description": "RedWarn Discord folder name (e.g. 'redwarn-discord/')"
+                },
+                "RWLink.folders.swat": {
+                    "type": "string",
+                    "default": "swat/",
+                    "description": "RedWarn Web folder name (e.g. 'swat/')"
                 }
             }
         }

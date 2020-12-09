@@ -12,6 +12,12 @@ export function activate(context: vscode.ExtensionContext) {
     const rwwFolder =
         config.get<any>("folders.redwarnWeb") +
         (config.get<any>("folders.redwarnWeb").endsWith("/") ? "" : "/");
+    const rwdFolder =
+        config.get<any>("folders.redwarnDiscord") +
+        (config.get<any>("folders.redwarnDiscord").endsWith("/") ? "" : "/");
+    const swatFolder =
+        config.get<any>("folders.swat") +
+        (config.get<any>("folders.swat").endsWith("/") ? "" : "/");
 
     const gitExtension = vscode.extensions.getExtension<GitExtension>(
         "vscode.git"
@@ -30,6 +36,10 @@ export function activate(context: vscode.ExtensionContext) {
                 path = path.replace(rwFolder, `rw:/${commit}/`);
             } else if (path.includes(rwwFolder)) {
                 path = path.replace(rwwFolder, `rww:/${commit}/`);
+            } else if (path.includes(rwdFolder)) {
+                path = path.replace(rwdFolder, `rwd:/${commit}/`);
+            } else if (path.includes(swatFolder)) {
+                path = path.replace(swatFolder, `swat:/${commit}/`);
             } else {
                 const folder = `${
                     vscode.workspace
@@ -40,6 +50,10 @@ export function activate(context: vscode.ExtensionContext) {
                     path = `rw:/${commit}/${path}`;
                 } else if (folder === rwwFolder) {
                     path = `rww:/${commit}/${path}`;
+                } else if (folder === rwdFolder) {
+                    path = `rwd:/${commit}/${path}`;
+                } else if (folder === swatFolder) {
+                    path = `swat:/${commit}/${path}`;
                 } else {
                     vscode.window
                         .showErrorMessage(

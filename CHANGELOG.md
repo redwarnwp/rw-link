@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Add `Parse Link` function
 
+## 0.2.0 - 2020-12-09
+-   Add `rwd` and `swat` support
+
 ## 0.1.1 - 2020-11-17
 
 -   Updated README.md with installation instructions
